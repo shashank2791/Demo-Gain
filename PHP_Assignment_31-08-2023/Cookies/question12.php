@@ -1,6 +1,4 @@
 <?php
-// Set the session save path
-session_save_path('/Applications/XAMPP/xamppfiles/htdocs/shashank/PHP Assignment 31-08-2023');
 
 
 // Get the session save path directory

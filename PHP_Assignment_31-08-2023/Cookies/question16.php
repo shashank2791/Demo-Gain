@@ -1,9 +1,7 @@
 <?php
-// Set the session save path
-session_save_path('/Applications/XAMPP/xamppfiles/htdocs/shashank/PHP Assignment 31-08-2023');
 
-$cookieName = "myCookie";
-$value = "Cookie Value";
+$cookieName = 'myCookie';
+$value = 'Cookie Value';
 
 // Set the cookie
 setcookie($cookieName, $value, time() + 3600, "/");

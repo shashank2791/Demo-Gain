@@ -1,0 +1,13 @@
+Please make sure that all the files
+
+book_rating.py 
+books.py
+library.py
+main.py
+users.py 
+
+are in the same file. 
+
+Open the folder where all these files are saved in the terminal and then run the command 
+
+python main.py 

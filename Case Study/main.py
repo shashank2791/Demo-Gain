@@ -67,10 +67,7 @@ Use List/dictionary as required.
 from library import Library
 from datetime import date, datetime
 
-# Create instances of Library, Users, and BookRating classes
-library = Library()
-
-# Add books to the library
+# Add books to the Library
 # Sample book data
 books_data = [
     {
@@ -214,17 +211,15 @@ book_ratings_data = [
     {"serial_no": 2, "isbn": 8498, "rating": 3.0}
 ]
 
-
-library = Library()
 # Example usage:
 for book_data in books_data:
-    library.add_book(**book_data)
+    Library.add_book(**book_data)
 
 for user_data in users_data:
-    library.add_user(**user_data)
+    Library.add_user(**user_data)
 
 for rating_data in book_ratings_data:
-    library.add_rating(**rating_data)
+    Library.add_rating(**rating_data)
 
 print("\n\n\n\n")
 print("-" * 180)
@@ -260,7 +255,7 @@ while True:
                 add_book_isbn = input("\nEnter the ISBN for the book: ")
                 if (str(add_book_isbn) in ["Exit", "exit"]):
                     break
-                elif (add_book_isbn != "" and int(add_book_isbn) > 0 and int(add_book_isbn) not in library.books):
+                elif (add_book_isbn != "" and int(add_book_isbn) > 0 and int(add_book_isbn) not in Library.books):
                     add_book_title = input(
                         "\nEnter the Title for the book: ")
                     add_book_author = input(
@@ -280,7 +275,7 @@ while True:
                     add_book_image_url_l = input(
                         "\nEnter the Long URl for the book: ")
 
-                    library.add_book(
+                    Library.add_book(
                         int(add_book_isbn),
                         add_book_title,
                         add_book_author,
@@ -293,13 +288,13 @@ while True:
                     )
 
         case 2:
-            library.del_book()
+            Library.del_book()
 
         case 3:
-            library.update_book()
+            Library.update_book()
 
         case 4:
-            library.check_title()
+            Library.check_title()
 
         case 5:
             while True:
@@ -309,7 +304,7 @@ while True:
                     break
 
                 elif (int(user_isbn) > 0 and user_isbn != ""):
-                    if (library.check_isbn(int(user_isbn))):
+                    if (Library.check_isbn(int(user_isbn))):
                         print(
                             f"\n\nBook with ISBN '{user_isbn}' found in the System.")
                     else:
@@ -324,7 +319,7 @@ while True:
                 "\n\nEnter the user address of the new user: ")
             user_area_code = input("\n\nEnter the area code of the new user: ")
 
-            library.add_user(user_serial_no, user_address, user_area_code)
+            Library.add_user(user_serial_no, user_address, user_area_code)
 
         case 7:
             user_new_serial_no = input(
@@ -333,7 +328,7 @@ while True:
             user_new_area_code = input(
                 "\n\nEnter the new area code of the user: ")
 
-            library.change_user(user_new_serial_no,
+            Library.change_user(user_new_serial_no,
                                 user_new_address, user_new_area_code)
 
         case 8:
@@ -341,36 +336,36 @@ while True:
                 "\n\nEnter the serial number of the User you want to issue the book to: ")
             user_issue_book_isbn = input(
                 "\n\nEnter the book isbn to issue to the user: ")
-            library.issue(user_issue_serial_no, user_issue_book_isbn)
+            Library.issue(user_issue_serial_no, user_issue_book_isbn)
 
         case 9:
             user_return_serial_no = input(
                 "\n\nEnter the serial no of the user: ")
             user_return_book_isbn = input(
                 "\n\nEnter the ISBN of the book the user wants to return: ")
-            library.return_book(user_return_serial_no, user_return_book_isbn)
+            Library.return_book(user_return_serial_no, user_return_book_isbn)
 
         case 10:
             user_rating_serial_no = input("\n\nEnter serial no: ")
             user_rating_isbn = input("\n\nEnter ISBN for the book: ")
             user_new_rating = input("\n\nEnter the rating for the book: ")
 
-            library.add_rating(user_rating_serial_no,
+            Library.add_rating(user_rating_serial_no,
                                user_rating_isbn, user_new_rating)
 
             print(
-                f"\n\nUser rating for the book with ISBN '{user_issue_book_isbn}' updated")
+                f"\n\nUser rating for the book with ISBN '{user_rating_isbn}' updated")
 
         case 11:
-            library.display()
+            Library.display()
 
         case 12:
-            library.avg_rating()
+            Library.avg_rating()
 
         case 13:
-            library.total()
+            Library.total()
         case 14:
-            library.top_five()
+            Library.top_five()
         case 15:
             print("\n You have successfully exited the application")
             break

@@ -11,12 +11,11 @@ class Library:
         books (dict): A dictionary to store Book objects with ISBN as keys.
         users (dict): A dictionary to store User objects with serial numbers as keys.
     """
+    books = {}
+    users = {}
 
-    def __init__(self):
-        self.books = {}
-        self.users = {}
-
-    def add_book(self, isbn, title, author, year_of_publication, publisher, image_url_s, image_url_m, image_url_l):
+    @staticmethod
+    def add_book(isbn, title, author, year_of_publication, publisher, image_url_s, image_url_m, image_url_l):
         """
         Add a new book to the library's collection.
 
@@ -38,21 +37,22 @@ class Library:
             if isbn <= 0 or isbn == "":
                 print("\n\nISBN must be a positive integer and non-empty")
             else:
-                if isbn in self.books:
+                if isbn in Library.books:
                     print(f"\n\nBook with ISBN {isbn} already exists.")
 
                 else:
                     book = Book(isbn, title, author, year_of_publication,
                                 publisher, image_url_s, image_url_m, image_url_l)
-                    self.books[isbn] = book
-                    if isbn in self.books:
+                    Library.books[isbn] = book
+                    if isbn in Library.books:
                         print(
                             f"\n\nBook '{book.title}' added successfully to the System.")
 
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def del_book(self):
+    @staticmethod
+    def del_book():
         """
         Delete a book from the library's collection.
 
@@ -65,8 +65,8 @@ class Library:
                     "\n\nEnter the ISBN of the book you want to delete or enter exit to Quit: ")
                 if (str(del_book_isbn) in ["Exit", "exit"]):
                     break
-                elif (del_book_isbn != "" and int(del_book_isbn) in self.books):
-                    del self.books[int(del_book_isbn)]
+                elif (del_book_isbn != "" and int(del_book_isbn) in Library.books):
+                    del Library.books[int(del_book_isbn)]
                     print('\n\nBook with ISBN "' + str(del_book_isbn) +
                           '" deleted from the system successfully.\n')
                 else:
@@ -76,7 +76,8 @@ class Library:
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def update_book(self):
+    @staticmethod
+    def update_book():
         """
         Update the title of a book in the library's collection.
 
@@ -92,15 +93,15 @@ class Library:
                 elif int(isbn) <= 0:
                     print("\n\nISBN must be a positive integer.")
 
-                elif int(isbn) in self.books:
+                elif int(isbn) in Library.books:
                     isbn = int(isbn)
                     print(
-                        f"\n\nThe current book name for ISBN '{isbn}' is '{self.books[isbn].title}'")
+                        f"\n\nThe current book name for ISBN '{isbn}' is '{Library.books[isbn].title}'")
                     new_title = input("\n\nEnter the new title of the book: ")
                     if not new_title:
                         print("\n\nNew title cannot be empty.")
 
-                    self.books[isbn].title = new_title
+                    Library.books[isbn].title = new_title
                     print(
                         f"\n\nBook title updated to '{new_title}' for ISBN {isbn}.")
                 else:
@@ -110,7 +111,8 @@ class Library:
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def check_title(self):
+    @staticmethod
+    def check_title():
         """
         Check the availability of a book by title.
 
@@ -125,7 +127,7 @@ class Library:
                     break
                 else:
                     matching_books = [
-                        book for book in self.books.values() if book.title == user_title]
+                        book for book in Library.books.values() if book.title == user_title]
                     if not matching_books:
                         print(
                             f"\n\nBook with title '{user_title}' not found in the System.")
@@ -136,7 +138,8 @@ class Library:
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def check_isbn(self, isbn):
+    @staticmethod
+    def check_isbn(isbn):
         """
         Check the availability of a book by ISBN.
 
@@ -146,9 +149,10 @@ class Library:
         Returns:
             Book or None: The Book object with the matching ISBN or None if not found.
         """
-        return self.books.get(isbn)
+        return Library.books.get(isbn)
 
-    def issue(self, user_serial_no, book_isbn):
+    @staticmethod
+    def issue(user_serial_no, book_isbn):
         """
         Issue a book to a user from the library's collection.
 
@@ -166,8 +170,8 @@ class Library:
                 print(
                     "\n\nSerial No and ISBN must be positive integers.")
             else:
-                user = self.users.get(user_serial_no)
-                book = self.books.get(book_isbn)
+                user = Library.users.get(user_serial_no)
+                book = Library.books.get(book_isbn)
                 if not user:
                     print(
                         f"\n\nUser with Serial No '{user_serial_no}' not found.")
@@ -186,7 +190,8 @@ class Library:
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def return_book(self, user_serial_no, book_isbn):
+    @staticmethod
+    def return_book(user_serial_no, book_isbn):
         """
         Return a book to the library and calculate late fees if applicable.
 
@@ -204,53 +209,57 @@ class Library:
                 print("\n\nSerial No and ISBN must be positive integers.")
 
             else:
-                user = self.users.get(user_serial_no)
-                book = self.books.get(book_isbn)
+                user = Library.users.get(user_serial_no)
+                book = Library.books.get(book_isbn)
 
                 if not user:
                     print(
                         f"\n\nUser with Serial No '{user_serial_no}' not found.")
-                if not book:
+                elif not book:
                     print(f"\n\nBook with ISBN '{book_isbn}' not found.")
 
-                if not hasattr(book, 'issued_to') or not hasattr(book, 'due_date'):
+                elif not hasattr(book, 'issued_to') or not hasattr(book, 'due_date'):
                     print(f"\n\nBook '{book.title}' is not currently issued.")
-                if book.issued_to != user_serial_no:
+                elif book.issued_to != user_serial_no:
                     print(
                         f"\n\nBook '{book.title}' is not issued to User '{user_serial_no}'.")
 
                 return_date = date.today()
-                due_date = book.due_date
+                if hasattr(book, "due_date"):
+                    due_date = book.due_date
 
-                if return_date > due_date:
-                    days_late = (return_date - due_date).days
-                    late_fee = days_late * 10
-                    print(
-                        f"\n\nBook '{book.title}' is returned late by {days_late} days. Late fee: Rs {late_fee}")
-                else:
-                    print(f"\n\nBook '{book.title}' is returned on time.")
+                    if book and hasattr(book, "due_date") and return_date > due_date:
+                        days_late = (return_date - due_date).days
+                        late_fee = days_late * 10
+                        print(
+                            f"\n\nBook '{book.title}' is returned late by {days_late} days. Late fee: Rs {late_fee}")
+                    else:
+                        print(f"\n\nBook '{book.title}' is returned on time.")
 
-                del book.issued_to
-                del book.due_date
+                    del book.issued_to
+
+                    del book.due_date
 
         except Exception as error:
-            print("\n\nAn exception occurred:", type(error).__name__)
+            print("\n\nAn exception occurred:", error)
 
-    def display(self):
+    @staticmethod
+    def display():
         """
         Display ISBN, area code, and ratings of books in the library's collection.
         """
-        for isbn, book in self.books.items():
+        for isbn, book in Library.books.items():
             print(
                 f"ISBN: {isbn}, Area Code: {book.publisher}, Ratings: {book.ratings}")
 
-    def total(self):
+    @staticmethod
+    def total():
         """
         Calculate and display the total number of books published every year.
         """
         year_counts = {}
 
-        for book in self.books.values():
+        for book in Library.books.values():
             year = book.year_of_publication.year
             if year not in year_counts:
                 year_counts[year] = 0
@@ -259,11 +268,12 @@ class Library:
         for year, count in year_counts.items():
             print(f"Year: {year}, Total Books Published: {count}")
 
-    def top_five(self):
+    @staticmethod
+    def top_five():
         """
         Display the five most popular books based on the avg rating of books.
         """
-        sorted_books = sorted(self.books.values(),
+        sorted_books = sorted(Library.books.values(),
                               key=lambda book: sum(book.ratings)/len(book.ratings) if book.ratings else 0, reverse=True)
         top_five_books = sorted_books[:5]
 
@@ -272,7 +282,8 @@ class Library:
             print(
                 f"{i}. Title: {book.title}, ISBN: {book.isbn}, Average Rating: {sum(book.ratings)/len(book.ratings):.2f}")
 
-    def add_user(self, serial_no, address, area_code):
+    @staticmethod
+    def add_user(serial_no, address, area_code):
         """
         Add a new user to the collection.
 
@@ -289,20 +300,21 @@ class Library:
             if serial_no <= 0 or serial_no == "":
                 print("\n\nSerial No must be a positive integer.")
 
-            elif serial_no in self.users:
+            elif serial_no in Library.users:
                 print(f"\n\nUser with Serial No '{serial_no}' already exists.")
 
             else:
                 user = Users(serial_no, address, area_code)
-                self.users[serial_no] = user
-                if serial_no in self.users:
+                Library.users[serial_no] = user
+                if serial_no in Library.users:
                     print(
                         f"\n\nUser with Serial No '{serial_no}' addedd successfully to the system.")
 
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def change_user(self, serial_no, new_address, new_area_code):
+    @staticmethod
+    def change_user(serial_no, new_address, new_area_code):
         """
         Update the details of a user.
 
@@ -319,11 +331,11 @@ class Library:
             if serial_no <= 0:
                 print("\n\nSerial No must be a positive integer.")
 
-            elif serial_no in self.users:
+            elif serial_no in Library.users:
                 if not new_address:
                     print("\n\nNew address cannot be empty.")
                 else:
-                    user = self.users[serial_no]
+                    user = Library.users[serial_no]
                     user.address = new_address
                     user.area_code = new_area_code
 
@@ -337,7 +349,8 @@ class Library:
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def get_user(self, serial_no):
+    @staticmethod
+    def get_user(serial_no):
         """
         Get user information by serial number.
 
@@ -347,24 +360,26 @@ class Library:
         Returns:
             User or None: The User object with the matching serial number, or None if not found.
         """
-        return self.users.get(serial_no)
+        return Library.users.get(serial_no)
 
-    def list_users(self):
+    @staticmethod
+    def list_users():
         """
         Get a list of all users in the collection.
 
         Returns:
             list: A list of User objects representing all users.
         """
-        return list(self.users.values())
+        return list(Library.users.values())
 
-    def add_rating(self, serial_no, isbn, rating):
+    @staticmethod
+    def add_rating(serial_no, isbn, rating):
         """
         Add a rating for a book by a user.
 
         Args:
             serial_no (int): The serial number of the user giving the rating.
-            isbn (int): The ISBN of the book being rated.
+            isbn(int) : ISBN of the book for which the user is adding the rating
             rating (float): The rating to be added.
 
         Raises:
@@ -381,9 +396,8 @@ class Library:
                 print("\n\nRating must be between 1 and 5.")
 
             else:
-                user = self.get_user(serial_no)
-                book = self.check_isbn(isbn)
-
+                user = Library.get_user(serial_no)
+                book = Library.check_isbn(isbn)
                 if not user:
                     print(
                         f"\n\nUser with Serial No '{serial_no}' not found.")
@@ -398,13 +412,14 @@ class Library:
         except Exception as error:
             print("\n\nAn exception occurred:", type(error).__name__)
 
-    def avg_rating(self):
+    @staticmethod
+    def avg_rating():
         """
         Calculate and display the average ratings of books per publisher.
         """
         publisher_ratings = {}
 
-        for book in self.books.values():
+        for book in Library.books.values():
             if book.publisher not in publisher_ratings:
                 publisher_ratings[book.publisher] = []
 

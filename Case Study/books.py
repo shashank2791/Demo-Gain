@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+from book_rating import BookRating
 
 
 @dataclass
-class Book:
-    def __init__(self, isbn, title, author, year_of_publication, publisher, image_url_s, image_url_m, image_url_l):
+class Book(BookRating):
+    def __init__(self, isbn, title, author, year_of_publication, publisher, image_url_s, image_url_m, image_url_l, d):
         """
         Initialize a Book object with the provided attributes.
 
@@ -16,6 +17,7 @@ class Book:
             image_url_s (str): The URL for the small-sized book image.
             image_url_m (str): The URL for the medium-sized book image.
             image_url_l (str): The URL for the large-sized book image.
+
 
         Attributes:
             isbn (int): The ISBN of the book.

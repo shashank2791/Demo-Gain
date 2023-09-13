@@ -1,4 +1,7 @@
+from dataclasses import dataclass
 
+
+@dataclass
 class Users:
     """
     Represents a collection of library users.

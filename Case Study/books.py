@@ -4,7 +4,7 @@ from book_rating import BookRating
 
 @dataclass
 class Book(BookRating):
-    def __init__(self, isbn, title, author, year_of_publication, publisher, image_url_s, image_url_m, image_url_l, d):
+    def __init__(self, isbn, title, author, year_of_publication, publisher, image_url_s, image_url_m, image_url_l):
         """
         Initialize a Book object with the provided attributes.
 

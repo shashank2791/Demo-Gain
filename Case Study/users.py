@@ -5,9 +5,6 @@ from dataclasses import dataclass
 class Users:
     """
     Represents a collection of library users.
-
-    Attributes:
-        users (dict): A dictionary to store User objects with serial numbers as keys.
     """
 
     def __init__(self, serial_no, address, area_code):

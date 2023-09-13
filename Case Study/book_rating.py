@@ -5,10 +5,7 @@ from dataclasses import dataclass
 @dataclass
 class BookRating():
     """
-    Represents a book rating system.
-
-    Attributes:
-        book_ratings (dict): A dictionary to store book ratings with ISBN as keys and a list of ratings as values.
+    Represents a book rating system. With serial no, isbn and rating
     """
 
     def __init__(self, serial_no, isbn,  rating=[]):
